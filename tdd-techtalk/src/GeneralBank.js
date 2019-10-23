@@ -11,6 +11,7 @@ export default class GeneralBank {
   /*
 
     user
+    user.id
     user.active
     user.creditAccounts[]
     user.debitAccounts[]
@@ -19,7 +20,6 @@ export default class GeneralBank {
     payload.atmID (need to find an ATM locator)
     payload.timestamp
     payload.amount
-    payload.location
 
 
 
@@ -53,11 +53,16 @@ export default class GeneralBank {
       throw new Error('transaction cannot be in the future');
     }
 
+    verifyAtmId(this.user.id, payload.atmId);
 
 
 
   }
 
+
+  verifyAtmId(userid, atmid) {
+
+  }
 
 
 
