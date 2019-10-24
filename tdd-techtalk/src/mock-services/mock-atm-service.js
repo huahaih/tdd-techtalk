@@ -29,7 +29,4 @@ export default class AtmService {
     return location;
   }
 
-
 }
-
-

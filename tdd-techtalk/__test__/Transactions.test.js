@@ -51,7 +51,7 @@ describe('Testing the transactions against a GeneralBank', function () {
 
 
   it('should test that transaction throws an error', function () {
-    const user = mock_user;
+    const user = {};
     const transaction = mock_transaction;
     expect(function () { createNewTransaction(user, transaction); }).toThrow();
   });
