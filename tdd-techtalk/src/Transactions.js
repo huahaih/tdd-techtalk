@@ -1,14 +1,16 @@
-const createNewTransaction = (info, callback) => {
-  console.log('--> createNewTransaction enter <--');
+import GeneralBank from '../src/GeneralBank';
+import LocationService from './mock-services/mock-location-service';
 
-  let user = {
-    name: info.name,
-    accountType: 'chequing',
-  };
+const createNewTransaction = (user, transaction) => {
+  console.log('createNewTransaction entered...');
+  let generalBank = new GeneralBank(user, new LocationService());
 
   try {
-    GeneralBank.debit(user, callback);
+    console.log('initiate debit transaction');
+    generalBank.debit(user);
   } catch (err) {
-    callback(err);
+    throw new Error('there was a catastrophic error');
   }
 };
+
+export { createNewTransaction };

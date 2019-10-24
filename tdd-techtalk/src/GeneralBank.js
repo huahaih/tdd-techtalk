@@ -1,30 +1,14 @@
+import LocationService from './mock-services/mock-location-service';
+
 
 export default class GeneralBank {
 
 
-
-  constructor(user) {
+  constructor(user, locationService) {
     this.user = user;
+    this.locationService = locationService;
   }
 
-
-  /*
-
-    user
-    user.id
-    user.active
-    user.creditAccounts[]
-    user.debitAccounts[]
-
-    payload.accountNumber
-    payload.atmID (need to find an ATM locator)
-    payload.timestamp
-    payload.amount
-
-
-
-
-  */
 
   debit(payload) {
     console.log('GeneralBank: debit entered...');
@@ -53,14 +37,17 @@ export default class GeneralBank {
       throw new Error('transaction cannot be in the future');
     }
 
-    verifyAtmId(this.user.id, payload.atmId);
+    const verifiedResult = this.verifyVicinity(this.user.id, payload.atmId);
 
 
 
   }
 
 
-  verifyAtmId(userid, atmid) {
+  verifyVicinity(userId, atmId) {
+    console.log('verifying atm to ensure its current location current makes sense to where the user was last time');
+    // need to call location service
+    this.locationService.verifyVicinity(userId, atmId);
 
   }
 
