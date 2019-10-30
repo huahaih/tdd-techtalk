@@ -59,6 +59,21 @@ export default class GeneralBank {
     }
 
 
+    // Everything checks out at this point, let's start processing the transaction
+
+    if (transaction.amount < 5000.00) {
+      // automatically process transaction
+
+      // check user limit here?
+      // check for sufficient funds
+
+    } else {
+      // this is a special handling
+
+      // check user limit??
+
+    }
+
     return 'successful';
   }
 
@@ -69,13 +84,6 @@ export default class GeneralBank {
 
 
 
-  doActualDebit5000OrLess(payload, user) {
-
-  }
-
-  doActualDebitOver5000(payload, user) {
-
-  }
 
 }
 
