@@ -1,9 +1,6 @@
-// anything to do with ATM
 
-// this is an independent atm locator service
+// gets the location of the ATM given the atmId
 
-
-// so need to mock locating an ATM
 export default class AtmService {
 
   constructor() { }

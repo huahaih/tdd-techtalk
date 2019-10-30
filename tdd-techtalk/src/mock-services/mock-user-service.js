@@ -1,5 +1,5 @@
 
-// Gets general information about a user
+// returns a mock location for the user defined
 
 export default class UserService {
 

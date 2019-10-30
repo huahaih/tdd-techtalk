@@ -1,12 +1,14 @@
-import LocationService from './mock-services/mock-location-service';
+import ProximityService from './mock-services/mock-proximity-service';
 
 
 export default class GeneralBank {
 
-
-  constructor(user, locationService) {
+  constructor(user, proximityService) {
     this.user = user;
-    this.locationService = locationService;
+    this.proximityService = proximityService;
+
+    // sets the default tolerance distance this bank will accept
+    this.distanceTolerance = 200;
   }
 
 
@@ -21,33 +23,43 @@ export default class GeneralBank {
     }
 
     // ensure the user is active
+    if (!this.user.id) {
+      throw new Error('the user has invalid information');
+    }
+
+    // ensure the user is active
     if (!this.user.active) {
       throw new Error('the user is inactive');
     }
 
+    // ensure the user has at least 1 debit account
     if (!this.user.debitAccounts || this.user.debitAccounts.length === 0) {
       throw new Error('the user has no debit accounts');
     }
 
 
-    // second verify any payload data that may be 'suspicious'
 
     let currentDate = new Date();
     if (payload.timestamp > currentDate) {
       throw new Error('transaction cannot be in the future');
     }
 
-    const verifiedResult = this.verifyVicinity(this.user.id, payload.atmId);
+
+
+    // checks to make sure the user isn't too far
+    const verifiedResult = this.verifyProximity(this.user.id, payload.atmId);
 
 
 
   }
 
 
-  verifyVicinity(userId, atmId) {
+  verifyProximity(userId, atmId) {
     console.log('verifying atm to ensure its current location current makes sense to where the user was last time');
     // need to call location service
-    this.locationService.verifyVicinity(userId, atmId);
+    const proximity = this.proximityService.getProximity(userId, atmId);
+
+    console.log('proximity found: ' + proximity);
 
   }
 
