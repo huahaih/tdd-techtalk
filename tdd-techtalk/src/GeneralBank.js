@@ -1,5 +1,5 @@
-import ProximityService from './mock-services/mock-proximity-service';
-
+import SystemService from './mock-services/mock-system-service';
+import { throwStatement } from '@babel/types';
 
 export default class GeneralBank {
 
@@ -12,10 +12,13 @@ export default class GeneralBank {
   }
 
 
-  debit(payload) {
+  debit(transaction) {
     console.log('GeneralBank: debit entered...');
 
-    // first verify the user's data to ensure it's all good
+    // the transaction is an actual debit transaction
+    if (!transaction.accountType || transaction.accountType !== 'debit') {
+      throw new Error('transaction type is not debit')
+    }
 
     // ensure the user exists
     if (!this.user) {
@@ -37,30 +40,31 @@ export default class GeneralBank {
       throw new Error('the user has no debit accounts');
     }
 
-
-
-    let currentDate = new Date();
-    if (payload.timestamp > currentDate) {
-      throw new Error('transaction cannot be in the future');
+    // ensure the transaction contains a valid debit account
+    if (!this.user.debitAccounts.find(a => a.accountNumber === transaction.accountNumber)) {
+      throw new Error('the user has no matching debit account number');
     }
 
 
+    let ss = new SystemService();
+    let currentDate = ss.getCurrentTime();
+    if (transaction.timestamp > currentDate) {
+      throw new Error('the transaction is in the future');
+    }
 
     // checks to make sure the user isn't too far
-    const verifiedResult = this.verifyProximity(this.user.id, payload.atmId);
+    const userAtmProximity = this.getProximity(this.user.id, transaction.atmId);
+    if (userAtmProximity > this.distanceTolerance) {
+      throw new Error('the transaction is too far from last location of user');
+    }
 
 
-
+    return 'successful';
   }
 
 
-  verifyProximity(userId, atmId) {
-    console.log('verifying atm to ensure its current location current makes sense to where the user was last time');
-    // need to call location service
-    const proximity = this.proximityService.getProximity(userId, atmId);
-
-    console.log('proximity found: ' + proximity);
-
+  getProximity(userId, atmId) {
+    return this.proximityService.getProximity(userId, atmId);
   }
 
 
