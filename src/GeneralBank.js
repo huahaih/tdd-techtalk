@@ -1,4 +1,5 @@
 import SystemService from './mock-services/mock-system-service';
+import BankBalances from './BankBalances';
 
 export default class GeneralBank {
 
@@ -11,6 +12,7 @@ export default class GeneralBank {
 
     // gets an instance of the system service
     this.systemService = new SystemService();
+    this.bankBalances = new BankBalances();
   }
 
 
@@ -64,12 +66,17 @@ export default class GeneralBank {
     if (transaction.amount < 5000.00) {
       // automatically process transaction
 
-      // check user limit here?
       // check for sufficient funds
+      let currentBalance = this.bankBalances.getUserCurrentBalance(this.user.id, transaction.accountType, transaction.accountNumber);
 
+      if (currentBalance > transaction.amount) {
+        return this.debitFromAccount(this.user.id, transaction.accountNumber, transaction.amount);
+      } else {
+        this.overDebitFromAccount(this.user.id, transaction.accountNumber, transaction.amount);
+      }
     } else {
       // transaction is over 5000 this is a special handling
-
+      this.bankBalances.getUserBalance(this.user.userId, transaction.accountType, transaction.accountNumber);
       // check user limit??
 
     }
@@ -83,7 +90,18 @@ export default class GeneralBank {
   }
 
 
+  debitFromAccount(userId, accountNumber, amount) {
+    return this.bankBalances.subtractFromBalance(userId, accountNumber, amount);
+  }
 
+  overDebitFromAccount(userId, accountNumber, amount) {
+
+  }
+
+
+  creditFromAccount(userId, accountNumber, amount) {
+
+  }
 
 }
 

@@ -1,8 +1,8 @@
 // If you haven't already done so, download TDD Snippets from extensions Marketplace
 
 import { createNewTransactionDebit } from '../src/Transactions';
-
 /*
+
 
   Test a basic bank transaction against the GeneralBank functions
   You need to ensure you have 100% code coverage
@@ -26,20 +26,12 @@ describe('Testing the transactions against a GeneralBank', function () {
         {
           id: 1,
           accountNumber: 123456
-        },
-        {
-          id: 2,
-          accountNumber: 234567
         }
       ],
       debitAccounts: [
         {
           id: 1,
           accountNumber: 654321
-        },
-        {
-          id: 2,
-          accountNumber: 765432
         }
       ]
     };
@@ -129,13 +121,12 @@ describe('Testing the transactions against a GeneralBank', function () {
       const user = mock_user;
       const transaction = mock_transaction;
       const result = createNewTransactionDebit(user, transaction);
-      expect(result).toEqual('successful');
+      expect(result).toEqual('This transaction is approved!');
     });
 
+    // do another test for over debiting
+
   });
-
-
-
 
 
 });
