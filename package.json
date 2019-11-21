@@ -6,7 +6,7 @@
   "scripts": {
     "start": "babel-node src/index.js",
     "test": "jest",
-    "test:cover": "jest --coverage"
+    "test:report": "jest --coverage"
   },
   "author": "Hai Hua",
   "license": "ISC",

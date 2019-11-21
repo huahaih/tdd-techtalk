@@ -65,7 +65,7 @@ describe('Testing the transactions against a GeneralBank', function () {
   // transaction date is in the future
   // atm and last user location "too far away"
 
-  describe('test all failed debit transactions with bad data', function () {
+  describe('TESTING FAILED TRANSACTIONS', function () {
 
     it('should test that transaction throws an error when user does not exist', function () {
       const user = undefined;
@@ -92,8 +92,6 @@ describe('Testing the transactions against a GeneralBank', function () {
       const transaction = mock_transaction;
       expect(function () { createNewTransactionDebit(user, transaction); }).toThrowError('the user has no debit accounts');
     });
-
-
 
     it('should test that transaction throws an error when transaction type is not debit', function () {
       const user = mock_user;
@@ -125,7 +123,7 @@ describe('Testing the transactions against a GeneralBank', function () {
   });
 
 
-  describe('should test valid transactions', function () {
+  describe('TESTING SUCCESSFUL TRANSACTIONS', function () {
 
     it('should a successful transaction with proper information', function () {
       const user = mock_user;

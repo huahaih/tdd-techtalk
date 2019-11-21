@@ -1,5 +1,4 @@
 import SystemService from './mock-services/mock-system-service';
-import { throwStatement } from '@babel/types';
 
 export default class GeneralBank {
 
@@ -9,6 +8,9 @@ export default class GeneralBank {
 
     // sets the default tolerance distance this bank will accept
     this.distanceTolerance = 200;
+
+    // gets an instance of the system service
+    this.systemService = new SystemService();
   }
 
 
@@ -46,8 +48,7 @@ export default class GeneralBank {
     }
 
 
-    let ss = new SystemService();
-    let currentDate = ss.getCurrentTime();
+    let currentDate = this.systemService.getCurrentTime();
     if (transaction.timestamp > currentDate) {
       throw new Error('the transaction is in the future');
     }
@@ -60,7 +61,6 @@ export default class GeneralBank {
 
 
     // Everything checks out at this point, let's start processing the transaction
-
     if (transaction.amount < 5000.00) {
       // automatically process transaction
 
@@ -68,7 +68,7 @@ export default class GeneralBank {
       // check for sufficient funds
 
     } else {
-      // this is a special handling
+      // transaction is over 5000 this is a special handling
 
       // check user limit??
 
