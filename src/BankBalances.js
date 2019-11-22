@@ -9,16 +9,20 @@ export default class BankBalances {
     // however,
     this.balanceTolerance = 200;
     this.userDB = [{
-      userId: '1',
+      userId: 1,
       accountType: 'debit',
       accountNumber: 654321,
       currentBalance: 5000,
-    },
-    {
-      userId: '2',
+    }, {
+      userId: 2,
       accountType: 'debit',
       accountNumber: 123457,
       currentBalance: 5001,
+    }, {
+      userId: 3,
+      accountType: 'debit',
+      accountNumber: 654321,
+      currentBalance: 5,
     }];
   }
 

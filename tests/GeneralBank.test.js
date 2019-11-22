@@ -26,7 +26,7 @@ describe('TESTING GENERAL BANK', function () {
   beforeEach(function () {
     // Pre set-up
     user = {
-      id: '1',
+      id: 1,
       active: true,
       creditAccounts: [
         {
@@ -45,7 +45,7 @@ describe('TESTING GENERAL BANK', function () {
     transaction = {
       accountType: 'debit',
       accountNumber: 654321,
-      atmId: 9,
+      atmId: 1,
       timestamp: new Date(),
       amount: 10.0
     };
@@ -98,12 +98,13 @@ describe('TESTING GENERAL BANK', function () {
   });
 
 
+
   describe('SPY VERIFICATION', function () {
     it('should test that debitFromAccount was called once', function () {
       let debitFromAccount = sinon.spy(generalBank, 'debitFromAccount');
       generalBank.debit(user, transaction);
+      debitFromAccount.restore();
       sinon.assert.calledOnce(debitFromAccount);
-      sinon.restore();
     });
 
     it('should test that debitFromAccount was called once for even $0.01', function () {
@@ -111,13 +112,25 @@ describe('TESTING GENERAL BANK', function () {
 
       let debitFromAccount = sinon.spy(generalBank, 'debitFromAccount');
       generalBank.debit(user, transaction);
+      debitFromAccount.restore();
       sinon.assert.calledOnce(debitFromAccount);
-      sinon.restore();
     });
-
   });
 
 
+  describe('STUB VERIFICATION', function () {
+    it('should test that the proximity call is stubbed out', function () {
+      let getProximity = sinon.stub(generalBank, 'getProximity');
+      getProximity.returns(199);
+
+      user.id = 3;
+      generalBank.debit(user, transaction);
+      sinon.assert.calledWith(getProximity, user.id, transaction.atmId);
+      getProximity.restore();
+    });
+
+
+  });
 
 
 });

@@ -55,11 +55,14 @@ export default class GeneralBank {
     }
 
     // checks to make sure the user isn't too far
+    console.log('calling getProximity');
     const userAtmProximity = this.getProximity(user.id, transaction.atmId);
+    console.log('user-atm proximity:' + userAtmProximity);
     if (userAtmProximity > this.distanceTolerance) {
       throw new Error('the transaction is too far from last location of user');
     }
 
+    console.log('All error checking passed!');
 
     // Everything checks out at this point, let's start processing the transaction
     if (transaction.amount < 5000.00) {
@@ -88,6 +91,7 @@ export default class GeneralBank {
 
 
   getProximity(userId, atmId) {
+    console.log('get proximity from proximity service');
     return this.proximityService.getProximity(userId, atmId);
   }
 

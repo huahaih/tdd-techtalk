@@ -16,7 +16,7 @@ export default class UserService {
         location = 200;
         break;
       case 3:
-        location = 300;
+        location = 400;
         break;
       default:
         location = 1000;
