@@ -98,13 +98,12 @@ describe('TESTING GENERAL BANK', function () {
   });
 
 
-
   describe('SPY VERIFICATION', function () {
     it('should test that debitFromAccount was called once', function () {
       let debitFromAccount = sinon.spy(generalBank, 'debitFromAccount');
       generalBank.debit(user, transaction);
-      debitFromAccount.restore();
       sinon.assert.calledOnce(debitFromAccount);
+      debitFromAccount.restore();
     });
 
     it('should test that debitFromAccount was called once for even $0.01', function () {
@@ -112,8 +111,8 @@ describe('TESTING GENERAL BANK', function () {
 
       let debitFromAccount = sinon.spy(generalBank, 'debitFromAccount');
       generalBank.debit(user, transaction);
-      debitFromAccount.restore();
       sinon.assert.calledOnce(debitFromAccount);
+      debitFromAccount.restore();
     });
   });
 
@@ -124,7 +123,10 @@ describe('TESTING GENERAL BANK', function () {
       getProximity.returns(199);
 
       user.id = 3;
+
+      //expect(() => { generalBank.debit(user, transaction); }).toThrowError('the transaction is too far from last location of user');
       generalBank.debit(user, transaction);
+
       sinon.assert.calledWith(getProximity, user.id, transaction.atmId);
       getProximity.restore();
     });
