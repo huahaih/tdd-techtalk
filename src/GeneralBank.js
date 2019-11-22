@@ -3,8 +3,7 @@ import BankBalances from './BankBalances';
 
 export default class GeneralBank {
 
-  constructor(user, proximityService) {
-    this.user = user;
+  constructor(proximityService) {
     this.proximityService = proximityService;
 
     // sets the default tolerance distance this bank will accept
@@ -16,7 +15,7 @@ export default class GeneralBank {
   }
 
 
-  debit(transaction) {
+  debit(user, transaction) {
     console.log('GeneralBank: debit entered...');
 
     // the transaction is an actual debit transaction
@@ -25,27 +24,27 @@ export default class GeneralBank {
     }
 
     // ensure the user exists
-    if (!this.user) {
+    if (!user) {
       throw new Error('the user does not exist');
     }
 
     // ensure the user is active
-    if (!this.user.id) {
+    if (!user.id) {
       throw new Error('the user has invalid information');
     }
 
     // ensure the user is active
-    if (!this.user.active) {
+    if (!user.active) {
       throw new Error('the user is inactive');
     }
 
     // ensure the user has at least 1 debit account
-    if (!this.user.debitAccounts || this.user.debitAccounts.length === 0) {
+    if (!user.debitAccounts || user.debitAccounts.length === 0) {
       throw new Error('the user has no debit accounts');
     }
 
     // ensure the transaction contains a valid debit account
-    if (!this.user.debitAccounts.find(a => a.accountNumber === transaction.accountNumber)) {
+    if (!user.debitAccounts.find(a => a.accountNumber === transaction.accountNumber)) {
       throw new Error('the user has no matching debit account number');
     }
 
@@ -56,7 +55,7 @@ export default class GeneralBank {
     }
 
     // checks to make sure the user isn't too far
-    const userAtmProximity = this.getProximity(this.user.id, transaction.atmId);
+    const userAtmProximity = this.getProximity(user.id, transaction.atmId);
     if (userAtmProximity > this.distanceTolerance) {
       throw new Error('the transaction is too far from last location of user');
     }
@@ -67,16 +66,19 @@ export default class GeneralBank {
       // automatically process transaction
 
       // check for sufficient funds
-      let currentBalance = this.bankBalances.getUserCurrentBalance(this.user.id, transaction.accountType, transaction.accountNumber);
+      let currentBalance = this.bankBalances.getUserCurrentBalance(user.id, transaction.accountType, transaction.accountNumber);
 
       if (currentBalance > transaction.amount) {
-        return this.debitFromAccount(this.user.id, transaction.accountNumber, transaction.amount);
+        if (transaction.amount < 0.02) {
+          //this.debitFromAccount(user.id, transaction.accountNumber, transaction.amount);
+        }
+        return this.debitFromAccount(user.id, transaction.accountNumber, transaction.amount);
       } else {
-        this.overDebitFromAccount(this.user.id, transaction.accountNumber, transaction.amount);
+        this.overDebitFromAccount(user.id, transaction.accountNumber, transaction.amount);
       }
     } else {
       // transaction is over 5000 this is a special handling
-      this.bankBalances.getUserBalance(this.user.userId, transaction.accountType, transaction.accountNumber);
+      this.bankBalances.getUserBalance(user.userId, transaction.accountType, transaction.accountNumber);
       // check user limit??
 
     }
