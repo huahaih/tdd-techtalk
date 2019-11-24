@@ -73,7 +73,7 @@ export default class GeneralBank {
 
       if (currentBalance > transaction.amount) {
         if (transaction.amount < 0.02) {
-          //this.debitFromAccount(user.id, transaction.accountNumber, transaction.amount);
+          this.debitFromAccount(user.id, transaction.accountNumber, transaction.amount);
         }
         return this.debitFromAccount(user.id, transaction.accountNumber, transaction.amount);
       } else {
@@ -101,12 +101,12 @@ export default class GeneralBank {
   }
 
   overDebitFromAccount(userId, accountNumber, amount) {
-
+    // how much is the user allowed to go over their balance amount
   }
 
 
   creditFromAccount(userId, accountNumber, amount) {
-
+    // functions
   }
 
 }

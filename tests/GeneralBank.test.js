@@ -7,7 +7,6 @@ import GeneralBank from '../src/GeneralBank';
 
 
 describe('TESTING GENERAL BANK', function () {
-
   let userService;
   let atmService;
   let proximityService;
@@ -20,9 +19,9 @@ describe('TESTING GENERAL BANK', function () {
     generalBank = new GeneralBank(proximityService);
   });
 
+
   let user = {};
   let transaction = {};
-
   beforeEach(function () {
     // Pre set-up
     user = {
@@ -86,7 +85,8 @@ describe('TESTING GENERAL BANK', function () {
     });
 
     it('should test a transaction in the future', function () {
-      transaction.timestamp = transaction.timestamp.setTime(transaction.timestamp.getTime() + 7);
+      let t = transaction.timestamp;
+      t = t.setTime(t.getTime() + 7);
       expect(function () { generalBank.debit(user, transaction); }).toThrowError('the transaction is in the future');
     });
 
@@ -107,7 +107,7 @@ describe('TESTING GENERAL BANK', function () {
     });
 
     it('should test that debitFromAccount was called once for even $0.01', function () {
-      transaction.amount = 0.01;
+      transaction.amount = 0.03;
 
       let debitFromAccount = sinon.spy(generalBank, 'debitFromAccount');
       generalBank.debit(user, transaction);
@@ -130,6 +130,11 @@ describe('TESTING GENERAL BANK', function () {
       sinon.assert.calledWith(getProximity, user.id, transaction.atmId);
       getProximity.restore();
     });
+
+
+  });
+
+  describe('MOCK VERIFICATION', function () {
 
 
   });
