@@ -117,6 +117,12 @@ describe('TESTING GENERAL BANK', function () {
   });
 
 
+  // Test lifecycle with stubs:
+  //   Setup - Prepare object that is being tested and its stubs collaborators.
+  //   Exercise - Test the functionality.
+  //   Verify state - Use asserts to check object's state.
+  //   Teardown - Clean up resources.
+
   describe('STUB VERIFICATION', function () {
     it('should test that the proximity call is stubbed out', function () {
       let getProximity = sinon.stub(generalBank, 'getProximity');
@@ -134,8 +140,27 @@ describe('TESTING GENERAL BANK', function () {
 
   });
 
-  describe('MOCK VERIFICATION', function () {
 
+  // Test lifecycle with mocks:
+  //   Setup data - Prepare object that is being tested.
+  //   Setup expectations - Prepare expectations in mock that is being used by primary object.
+  //   Exercise - Test the functionality.
+  //   Verify expectations - Verify that correct methods has been invoked in mock.
+  //   Verify state - Use asserts to check object's state.
+  //   Teardown - Clean up resources.
+
+  describe('MOCK VERIFICATION', function () {
+    it('should test functions in GeneralBank are mocked', () => {
+      let gBank = sinon.mock(generalBank);
+
+      gBank.expects('getProximity').once().withArgs(user.id, transaction.atmId);
+      gBank.expects('debitFromAccount').once().withArgs(user.id, transaction.accountNumber, transaction.amount);
+      gBank.expects('creditFromAccount').never().withArgs(user.id, transaction.accountNumber, transaction.amount);
+      generalBank.debit(user, transaction);
+
+      gBank.verify();
+      gBank.restore();
+    });
 
   });
 

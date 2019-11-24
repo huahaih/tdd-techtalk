@@ -54,10 +54,8 @@ export default class GeneralBank {
       throw new Error('the transaction is in the future');
     }
 
-    // checks to make sure the user isn't too far
-    console.log('calling getProximity');
+    // checks to make sure the user isn't too far their last location
     const userAtmProximity = this.getProximity(user.id, transaction.atmId);
-    console.log('user-atm proximity:' + userAtmProximity);
     if (userAtmProximity > this.distanceTolerance) {
       throw new Error('the transaction is too far from last location of user');
     }
