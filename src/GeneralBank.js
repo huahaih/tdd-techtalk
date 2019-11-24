@@ -1,4 +1,4 @@
-import SystemService from './mock-services/mock-system-service';
+import SystemService from './Services/SystemService';
 import BankBalances from './BankBalances';
 
 export default class GeneralBank {

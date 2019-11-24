@@ -1,8 +1,8 @@
 import sinon from 'sinon';
 
-import ProximityService from '../src/mock-services/mock-proximity-service';
-import AtmService from '../src/mock-services/mock-atm-service';
-import UserService from '../src/mock-services/mock-user-service';
+import ProximityService from '../src/Services/ProximityService';
+import AtmService from '../src/Services/ATMService';
+import UserService from '../src/Services/UserService';
 import GeneralBank from '../src/GeneralBank';
 
 
