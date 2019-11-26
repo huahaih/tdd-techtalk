@@ -131,8 +131,9 @@ export default class GeneralBank {
 
       if (currentBalance > transaction.amount) {
         if (transaction.amount < 0.005) {
-          this.debitFromAccount(user.id, transaction.accountNumber, transaction.amount);
+          this.debit(user.id, transaction.accountNumber, transaction.amount);
         }
+        this.creditFromAccount(user.id, transaction.accountNumber, transaction.amount);
         return this.debitFromAccount(user.id, transaction.accountNumber, transaction.amount);
       } else {
         this.overDebitFromAccount(user.id, transaction.accountNumber, transaction.amount);
@@ -158,8 +159,6 @@ export default class GeneralBank {
 
 
   // TODO: call proximity service here
-
-
 
 
   debitFromAccount(userId, accountNumber, amount) {

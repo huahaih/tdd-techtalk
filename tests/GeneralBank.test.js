@@ -86,8 +86,7 @@ describe('TESTING GENERAL BANK', function () {
 
     // TODO (1): check transaction is not in the future
 
-
-    // TODO (2): check proximity issues
+    // TODO (2b)
 
 
   });
@@ -100,9 +99,7 @@ describe('TESTING GENERAL BANK', function () {
 
 
 
-
     // TODO (3): what else can you do here?
-
 
 
 
@@ -118,7 +115,7 @@ describe('TESTING GENERAL BANK', function () {
   describe('STUB VERIFICATION', function () {
 
 
-    // TODO (2b): proximity & rejection
+    // TODO (2c): proximity & rejection
 
 
 
@@ -138,7 +135,6 @@ describe('TESTING GENERAL BANK', function () {
   describe('MOCK VERIFICATION', function () {
 
     // TODO: (4) - ensure only functions called on behalf of debit
-
 
 
 
