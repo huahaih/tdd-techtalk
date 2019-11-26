@@ -6,9 +6,6 @@ export default class GeneralBank {
   constructor(proximityService) {
     this.proximityService = proximityService;
 
-    // sets the default tolerance distance this bank will accept
-    this.distanceTolerance = 200;
-
     // gets an instance of the system service
     this.systemService = new SystemService();
     this.bankBalances = new BankBalances();
@@ -48,6 +45,11 @@ export default class GeneralBank {
       throw new Error('the user has no matching debit account number');
     }
 
+    // TODO: handle future transaction
+
+
+    // TODO: handle proximity errors
+
 
 
     console.log('All error checking passed!');
@@ -60,7 +62,7 @@ export default class GeneralBank {
       let currentBalance = this.bankBalances.getUserCurrentBalance(user.id, transaction.accountType, transaction.accountNumber);
 
       if (currentBalance > transaction.amount) {
-        if (transaction.amount < 0.02) {
+        if (transaction.amount < 0.005) {
           this.debitFromAccount(user.id, transaction.accountNumber, transaction.amount);
         }
         return this.debitFromAccount(user.id, transaction.accountNumber, transaction.amount);
@@ -85,6 +87,10 @@ export default class GeneralBank {
 
     return 'successful';
   }
+
+
+  // TODO: call proximity service here
+
 
 
 
