@@ -84,37 +84,22 @@ describe('TESTING GENERAL BANK', function () {
       expect(function () { generalBank.debit(user, transaction); }).toThrowError('the user has no matching debit account number');
     });
 
-    it('should test a transaction in the future', function () {
-      let t = transaction.timestamp;
-      t = t.setTime(t.getTime() + 7);
-      expect(function () { generalBank.debit(user, transaction); }).toThrowError('the transaction is in the future');
-    });
+    // TODO (1): check transaction is not in the future
 
-    it('should test a transaction where the atm is too far away from last location of user', function () {
-      user.id = 3;
-      expect(function () { generalBank.debit(user, transaction); }).toThrowError('the transaction is too far from last location of user');
-    });
+
+    // TODO (2): check proximity rejection
 
   });
 
 
   // Read more on spies: https://sinonjs.org/releases/latest/spies/
   describe('SPY VERIFICATION', function () {
-    it('should test that debitFromAccount was called once', function () {
-      let debitFromAccount = sinon.spy(generalBank, 'debitFromAccount');
-      generalBank.debit(user, transaction);
-      sinon.assert.calledOnce(debitFromAccount);
-      debitFromAccount.restore();
-    });
 
-    it('should test that debitFromAccount was called once for even $0.01', function () {
-      transaction.amount = 0.03;
+    // TODO (3): ensure debit is called once
 
-      let debitFromAccount = sinon.spy(generalBank, 'debitFromAccount');
-      generalBank.debit(user, transaction);
-      sinon.assert.calledOnce(debitFromAccount);
-      debitFromAccount.restore();
-    });
+
+    // TODO (3): what else can you do here?
+
   });
 
 
@@ -125,18 +110,10 @@ describe('TESTING GENERAL BANK', function () {
   //   Teardown - Clean up resources.
   // Read more on stubs: https://sinonjs.org/releases/latest/stubs/
   describe('STUB VERIFICATION', function () {
-    it('should test that the proximity call is stubbed out', function () {
-      let getProximity = sinon.stub(generalBank, 'getProximity');
-      getProximity.returns(199);
 
-      user.id = 3;
 
-      //expect(() => { generalBank.debit(user, transaction); }).toThrowError('the transaction is too far from last location of user');
-      generalBank.debit(user, transaction);
+    // TODO (2): adjust proximity
 
-      sinon.assert.calledWith(getProximity, user.id, transaction.atmId);
-      getProximity.restore();
-    });
 
 
   });
@@ -152,17 +129,9 @@ describe('TESTING GENERAL BANK', function () {
   // Read more on mocks: https://sinonjs.org/releases/latest/mocks/
 
   describe('MOCK VERIFICATION', function () {
-    it('should test functions in GeneralBank are mocked', () => {
-      let gBank = sinon.mock(generalBank);
 
-      gBank.expects('getProximity').once().withArgs(user.id, transaction.atmId);
-      gBank.expects('debitFromAccount').once().withArgs(user.id, transaction.accountNumber, transaction.amount);
-      gBank.expects('creditFromAccount').never().withArgs(user.id, transaction.accountNumber, transaction.amount);
-      generalBank.debit(user, transaction);
+    // TODO: (4)
 
-      gBank.verify();
-      gBank.restore();
-    });
 
   });
 

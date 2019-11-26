@@ -49,16 +49,6 @@ export default class GeneralBank {
     }
 
 
-    let currentDate = this.systemService.getCurrentTime();
-    if (transaction.timestamp > currentDate) {
-      throw new Error('the transaction is in the future');
-    }
-
-    // checks to make sure the user isn't too far their last location
-    const userAtmProximity = this.getProximity(user.id, transaction.atmId);
-    if (userAtmProximity > this.distanceTolerance) {
-      throw new Error('the transaction is too far from last location of user');
-    }
 
     console.log('All error checking passed!');
 
@@ -96,11 +86,6 @@ export default class GeneralBank {
     return 'successful';
   }
 
-
-  getProximity(userId, atmId) {
-    console.log('get proximity from proximity service');
-    return this.proximityService.getProximity(userId, atmId);
-  }
 
 
   debitFromAccount(userId, accountNumber, amount) {
