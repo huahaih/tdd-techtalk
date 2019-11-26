@@ -98,6 +98,7 @@ describe('TESTING GENERAL BANK', function () {
   });
 
 
+  // Read more on spies: https://sinonjs.org/releases/latest/spies/
   describe('SPY VERIFICATION', function () {
     it('should test that debitFromAccount was called once', function () {
       let debitFromAccount = sinon.spy(generalBank, 'debitFromAccount');
@@ -122,7 +123,7 @@ describe('TESTING GENERAL BANK', function () {
   //   Exercise - Test the functionality.
   //   Verify state - Use asserts to check object's state.
   //   Teardown - Clean up resources.
-
+  // Read more on stubs: https://sinonjs.org/releases/latest/stubs/
   describe('STUB VERIFICATION', function () {
     it('should test that the proximity call is stubbed out', function () {
       let getProximity = sinon.stub(generalBank, 'getProximity');
@@ -148,6 +149,7 @@ describe('TESTING GENERAL BANK', function () {
   //   Verify expectations - Verify that correct methods has been invoked in mock.
   //   Verify state - Use asserts to check object's state.
   //   Teardown - Clean up resources.
+  // Read more on mocks: https://sinonjs.org/releases/latest/mocks/
 
   describe('MOCK VERIFICATION', function () {
     it('should test functions in GeneralBank are mocked', () => {
