@@ -79,8 +79,17 @@ export default class GeneralBank {
       }
     } else {
       // transaction is over 5000 this is a special handling
-      this.bankBalances.getUserBalance(user.userId, transaction.accountType, transaction.accountNumber);
+      let currentBalance = this.bankBalances.getUserBalance(user.userId, transaction.accountType, transaction.accountNumber);
+
       // check user limit??
+
+
+
+
+
+
+
+
 
     }
 
