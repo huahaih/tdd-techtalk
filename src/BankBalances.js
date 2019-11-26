@@ -38,7 +38,18 @@ export default class BankBalances {
   }
 
   overSubtractFromBalance(userId, accountNumber, amount) {
+    console.log('BankBalances:overSubtractFromBalance');
+    return 'This over transaction is approved';
+  }
 
+  subtractFromLimit(userId, accountNumber, amount) {
+    console.log('BankBalances:subtractFromLimit');
+    return 'This transaction limit is approved!';
+  }
+
+  overSubtractFromLimit(userId, accountNumber, amount) {
+    console.log('BankBalances:overSubtractFromLimit');
+    return 'This over transaction limit is approved';
   }
 
 }
