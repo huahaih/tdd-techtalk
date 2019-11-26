@@ -83,8 +83,6 @@ export default class GeneralBank {
 
 
   debit(user, transaction) {
-    console.log('GeneralBank: debit entered...');
-
     // the transaction is an actual debit transaction
     if (!transaction.accountType || transaction.accountType !== 'debit') {
       throw new Error('transaction type is not debit')
