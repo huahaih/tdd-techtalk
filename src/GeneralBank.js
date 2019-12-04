@@ -1,5 +1,6 @@
 import SystemService from './Services/SystemService';
 import BankBalances from './BankBalances';
+import { isTSImportEqualsDeclaration } from '@babel/types';
 
 export default class GeneralBank {
 
@@ -114,11 +115,22 @@ export default class GeneralBank {
     }
 
     // TODO: handle future transaction
+    let rightNow = this.systemService.getCurrentTime();
+    if (transaction.timestamp > rightNow) {
+      throw new Error('transaction is in the futre');
+    }
+
+
 
 
     // TODO: handle proximity errors
-
-
+    let proximity = this.getProximity(user.id, transaction.atmId);
+    console.log('proximity:' + proximity);
+    if (proximity > 200 && proximity < 5000) {
+      throw new Error('proximity is breached');
+    } else if (proximity >= 5000) {
+      throw new Error('you are too far away, your account is now shut down!!!');
+    }
 
     console.log('All error checking passed!');
 
@@ -131,9 +143,9 @@ export default class GeneralBank {
 
       if (currentBalance > transaction.amount) {
         if (transaction.amount < 0.005) {
-          this.debit(user.id, transaction.accountNumber, transaction.amount);
+          //this.debitFromAccount(user.id, transaction.accountNumber, transaction.amount);
         }
-        this.creditFromAccount(user.id, transaction.accountNumber, transaction.amount);
+        //this.creditFromAccount(user.id, transaction.accountNumber, transaction.amount);
         return this.debitFromAccount(user.id, transaction.accountNumber, transaction.amount);
       } else {
         this.overDebitFromAccount(user.id, transaction.accountNumber, transaction.amount);
@@ -159,6 +171,10 @@ export default class GeneralBank {
 
 
   // TODO: call proximity service here
+
+  getProximity(userId, atmId) {
+    return this.proximityService.getProximity(userId, atmId);
+  }
 
 
   debitFromAccount(userId, accountNumber, amount) {

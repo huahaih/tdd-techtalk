@@ -4,6 +4,7 @@ import ProximityService from '../src/Services/ProximityService';
 import AtmService from '../src/Services/ATMService';
 import UserService from '../src/Services/UserService';
 import GeneralBank from '../src/GeneralBank';
+import { get } from 'http';
 
 
 describe('TESTING GENERAL BANK', function () {
@@ -85,8 +86,21 @@ describe('TESTING GENERAL BANK', function () {
     });
 
     // TODO (1): check transaction is not in the future
+    it('should throw an error if transaction is in the future', () => {
+      let t = new Date();
+      transaction.timestamp = t.setDate(t.getDate() + 7);
+
+
+      expect(() => { generalBank.debit(user, transaction); }).toThrowError('transaction is in the futre');
+
+    });
 
     // TODO (2b)
+
+    it('should test that proximity has been breached', () => {
+      user.id = 3;
+      expect(() => { generalBank.debit(user, transaction); }).toThrowError('proximity is breached');
+    });
 
 
   });
@@ -94,14 +108,25 @@ describe('TESTING GENERAL BANK', function () {
 
   // Read more on spies: https://sinonjs.org/releases/latest/spies/
   describe('SPY VERIFICATION', function () {
-    // TODO (2a):
+    // TODO (2a): proximity is being called
+    it('should call getProximity at least once', () => {
+      let getProximity = sinon.spy(generalBank, 'getProximity');
+      generalBank.debit(user, transaction);
+      sinon.assert.calledWith(getProximity);
+      getProximity.restore();
+    });
 
 
 
+    // TODO (3): ensure debitFromAccount is called
+    it('should test that debit is called once', () => {
+      let debitFromAccount = sinon.spy(generalBank, 'debitFromAccount');
+      transaction.amount = 0.001;
 
-    // TODO (3): what else can you do here?
-
-
+      generalBank.debit(user, transaction);
+      sinon.assert.calledOnce(debitFromAccount);
+      debitFromAccount.restore();
+    });
 
   });
 
@@ -115,7 +140,17 @@ describe('TESTING GENERAL BANK', function () {
   describe('STUB VERIFICATION', function () {
 
 
-    // TODO (2c): proximity & rejection
+    // TODO (2c): stub proximity
+    it('should test that getProximity is stubbed', () => {
+      let getProximity = sinon.stub(generalBank, 'getProximity');
+      getProximity.returns(5000);
+
+
+      expect(() => { generalBank.debit(user, transaction); }).toThrowError('you are too far away, your account is now shut down!!!')
+
+      sinon.assert.calledWith(getProximity);
+      getProximity.restore();
+    });
 
 
 
@@ -135,8 +170,19 @@ describe('TESTING GENERAL BANK', function () {
   describe('MOCK VERIFICATION', function () {
 
     // TODO: (4) - ensure only functions called on behalf of debit
+    it('should test that only related debit transactions are being called', () => {
+      let allRelatedTransaction = sinon.mock(generalBank);
 
+      allRelatedTransaction.expects('getProximity').once();
+      allRelatedTransaction.expects('debitFromAccount').once();
 
+      allRelatedTransaction.expects('creditFromAccount').never();
+      generalBank.debit(user, transaction);
+
+      allRelatedTransaction.verify();
+      allRelatedTransaction.restore();
+
+    });
 
 
 
